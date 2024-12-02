@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model VerificationRequest {
+  id            String    @id @default(cuid())
+  email         String
+  scaiId        String
+  walletAddress String
+  token         String    @unique
+  verified      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([token])
+}
+
+model VerifiedWallet {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  scaiId        String    @unique
+  walletAddress String    @unique
+  verifiedAt    DateTime  @default(now())
+
+  @@index([scaiId])
+  @@index([walletAddress])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  verifyToken   String?   @unique
+  verified      Boolean   @default(false)
+  walletAddress String?   @unique
+  scaiId        String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([email])
+  @@index([verifyToken])
+}

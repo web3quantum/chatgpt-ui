@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS users (
+  id VARCHAR(36) PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  verify_token VARCHAR(255) UNIQUE,
+  verified BOOLEAN DEFAULT FALSE,
+  wallet_address VARCHAR(255) UNIQUE,
+  scai_id VARCHAR(255) UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_email (email),
+  INDEX idx_verify_token (verify_token)
+);
+
+CREATE TABLE IF NOT EXISTS verification_requests (
+  id VARCHAR(36) PRIMARY KEY,
+  email VARCHAR(255) NOT NULL,
+  scai_id VARCHAR(255) NOT NULL,
+  wallet_address VARCHAR(255) NOT NULL,
+  token VARCHAR(255) UNIQUE NOT NULL,
+  verified BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_token (token)
+);
